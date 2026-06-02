@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(13, 110, 253, 0.16), transparent 32rem),
+        linear-gradient(135deg, #f6f8fb 0%, #eef3f8 100%);
+      color: #1f2937;
+    }
+
+    .profile-shell {
+      max-width: 900px;
+    }
+
+    .top-bar {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 18px;
+    }
+
+    .profile-card {
+      border: 0;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+    }
+
+    .profile-cover {
+      height: 150px;
+      background:
+        linear-gradient(120deg, rgba(25, 135, 84, 0.88), rgba(13, 110, 253, 0.88)),
+        url("https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1400&q=80");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .avatar-wrap {
+      width: 152px;
+      height: 152px;
+      margin-top: -76px;
+      border: 6px solid #fff;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+      overflow: hidden;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .description-box {
+      max-width: 560px;
+      margin: 0 auto;
+      color: #64748b;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .form-panel {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .form-control {
+      border-radius: 12px;
+      padding: 0.8rem 0.95rem;
+    }
+
+    .btn {
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 576px) {
+      .profile-cover {
+        height: 120px;
+      }
+
+      .avatar-wrap {
+        width: 124px;
+        height: 124px;
+        margin-top: -62px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container profile-shell py-4 py-md-5">
+    <nav class="top-bar d-flex align-items-center justify-content-between px-3 px-md-4 py-3 mb-4">
+      <a href="/notes" class="btn btn-outline-secondary">Back to Notes</a>
+      <a href="/logout" class="btn btn-outline-danger">Logout</a>
+    </nav>
+
+    <section class="card profile-card">
+      <div class="profile-cover"></div>
+
+      <div class="card-body text-center px-4 px-md-5 pb-5">
+        <div class="avatar-wrap mx-auto mb-3">
+          <img
+            class="avatar-img"
+            src="{{ url_for('static', filename='uploads/' + user[2]) if user[2] else url_for('static', filename='default.png') }}"
+            alt="Profile avatar"
+          >
+        </div>
+
+        {% if not edit_mode %}
+          <p class="text-uppercase text-primary fw-bold small mb-2">My Profile</p>
+          <h1 class="h2 fw-bold mb-3">{{ user[0] }}</h1>
+
+          {% if user[1] %}
+            <p class="description-box mb-4">{{ user[1] }}</p>
+          {% else %}
+            <p class="description-box mb-4">No description yet. Add a few words about yourself.</p>
+          {% endif %}
+
+          <a href="/profile?edit=1" class="btn btn-primary px-4">Edit Profile</a>
+        {% else %}
+          <p class="text-uppercase text-primary fw-bold small mb-2">Edit Profile</p>
+          <h1 class="h3 fw-bold mb-4">Update your information</h1>
+
+          <form method="post" class="form-panel text-start">
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="username">Username</label>
+              <input id="username" class="form-control" name="username" value="{{ user[0] }}" placeholder="Username" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="avatar">Avatar file name</label>
+              <input id="avatar" class="form-control" name="avatar" value="{{ user[2] }}" placeholder="example.png">
+              <div class="form-text">Leave empty to use the default avatar.</div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold" for="description">Description</label>
+              <textarea id="description" class="form-control" name="description" rows="5" placeholder="Tell something about yourself">{{ user[1] }}</textarea>
+            </div>
+
+            <div class="d-grid d-sm-flex gap-2 justify-content-sm-center">
+              <button class="btn btn-primary px-4" type="submit">Save Changes</button>
+              <a href="/profile" class="btn btn-outline-secondary px-4">Cancel</a>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>
