@@ -1,5 +1,5 @@
-Project Topic
 Mobile application for organizing study notes 
+
 Aim 
 To explore current applications that students use to organize their study notes and to use these insights to design a mobile note-taking application that better supports their learning needs.
 `Objectives 
